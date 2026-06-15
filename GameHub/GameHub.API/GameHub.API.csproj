@@ -15,7 +15,6 @@
     <Folder Include="Configurations\" />
     <Folder Include="Data\" />
     <Folder Include="Dtos\" />
-    <Folder Include="Entities\" />
     <Folder Include="Mappings\" />
     <Folder Include="Services\" />
   </ItemGroup>
