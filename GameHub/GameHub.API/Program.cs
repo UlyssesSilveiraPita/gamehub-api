@@ -1,4 +1,12 @@
+using GameHub.API.Data;
+using Microsoft.EntityFrameworkCore;
+
+SQLitePCL.Batteries.Init();
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddDbContext<GameHubDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 

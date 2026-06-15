@@ -3,7 +3,7 @@
 public class Player
 {
     public Guid Id { get; set; }
-    public string Name { get; set; } = string.Empty;
+    public string NickName { get; set; } = string.Empty;
     public string UserId { get; set; } = string.Empty;
     public int Level { get; set; } = 1;
     public int Experience { get; set; } = 0;

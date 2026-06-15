@@ -1,0 +1,43 @@
+﻿using Microsoft.EntityFrameworkCore;
+using GameHub.API.Entities;
+
+namespace GameHub.API.Data;
+
+public class GameHubDbContext : DbContext
+{
+    public GameHubDbContext(DbContextOptions<GameHubDbContext> options) : base(options)
+    {
+
+    }
+
+    //=============================
+    // criacao das tabelas \\
+    //=============================
+
+    public DbSet<Player> Players { get; set; } 
+    public DbSet<Achievement> Achievements { get; set; }
+    public DbSet<PlayerAchievement> PlayerAchievements { get; set; }
+    public DbSet<SaveGame> SaveGames { get; set; }
+    public DbSet<LeaderboardEntry> LeaderboardEntries { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<PlayerAchievement>()
+            .HasKey(pa => new { pa.PlayerId, pa.AchievementId });
+
+        modelBuilder.Entity<PlayerAchievement>()
+            .HasOne(pa => pa.Player)
+            .WithMany(p => p.PlayerAchievements)
+            .HasForeignKey(pa => pa.PlayerId);
+
+        modelBuilder.Entity<PlayerAchievement>()
+            .HasOne(pa => pa.Achievement)
+            .WithMany(a => a.PlayerAchievements)
+            .HasForeignKey(pa => pa.AchievementId);
+    }
+
+
+
+}
