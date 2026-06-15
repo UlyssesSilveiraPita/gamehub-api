@@ -70,5 +70,42 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "GameHub.API.Controllers.AchievementsController",
+    "Method": "Update",
+    "RelativePath": "api/Achievements/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "GameHub.API.Dtos.Achievements.UpdateAchievementDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GameHub.API.Controllers.AchievementsController",
+    "Method": "Delete",
+    "RelativePath": "api/Achievements/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

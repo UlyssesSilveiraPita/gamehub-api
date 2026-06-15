@@ -3,6 +3,7 @@ using GameHub.API.Dtos.Achievements;
 using GameHub.API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Principal;
 
 namespace GameHub.API.Controllers;
 
@@ -78,5 +79,41 @@ public class AchievementsController : ControllerBase
         };
 
         return Ok(response);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(Guid id, UpdateAchievementDto dto) // atualiza uma conquista existente
+    {
+        var achievement = await _context.Achievements.FindAsync(id); // procura no banco
+
+        if(achievement is null)
+        {
+            return NotFound();
+        }
+
+        achievement.Name = dto.Name;    
+        achievement.Description = dto.Description;
+        achievement.Points = dto.Points;
+
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var achievemente = await _context.Achievements.FindAsync(id);
+
+        if(achievemente is null)
+        {
+            return NotFound();
+        }
+
+        _context.Achievements.Remove(achievemente);
+        await _context.SaveChangesAsync();
+
+
+        return NoContent();
     }
 }
