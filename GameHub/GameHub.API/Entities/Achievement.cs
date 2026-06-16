@@ -1,10 +1,18 @@
-﻿namespace GameHub.API.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace GameHub.API.Entities;
+
 
 public class Achievement
 {
     public Guid Id { get; set; } 
+    [Required]
+    [MaxLength(100)]
     public string Name { get; set; } = string.Empty;
+    [Required]
+    [MaxLength(500)]
     public string Description { get; set; } = string.Empty; // recebe vasio
+    [Range(1, 1000)]
     public int Points { get; set; }
 
     //=============================

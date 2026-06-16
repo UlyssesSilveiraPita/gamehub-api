@@ -19,9 +19,42 @@ public class AchievementsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AchievementResponseDto>>> GetAll() // cria o EndPoint
+    public async Task<ActionResult<IEnumerable<AchievementResponseDto>>> GetAll(
+        string? search,
+        int page = 1,
+        int pageSize = 10) // cria o EndPoint
+
     {
-        var achievements = await _context.Achievements
+
+        //Melhoria no filtro\\
+
+        var query = _context.Achievements.AsQueryable(); // montando a consulta
+
+        if(!string.IsNullOrEmpty(search))
+        {
+            query = query.Where( a =>  a.Name.Contains(search));
+        }
+        
+        // Paginacao dos Achievements \\
+
+        if(page < 1)
+        {
+            page = 1;
+        }
+
+        if (pageSize < 1)
+        {
+            pageSize = 10;
+        }
+
+        if(pageSize > 50)
+        {
+            pageSize = 50;
+        }
+
+        var achievement = await query
+            .Skip((page -1) * pageSize) // pula registros
+            .Take(pageSize) // pega quantidade limitada
             .Select(a => new AchievementResponseDto // transformando entidade em DTO
             {
                 Id = a.Id,
@@ -30,7 +63,8 @@ public class AchievementsController : ControllerBase
                 Points = a.Points
             })
             .ToListAsync();
-        return Ok(achievements);
+
+        return Ok(query);
     }
 
     [HttpPost]

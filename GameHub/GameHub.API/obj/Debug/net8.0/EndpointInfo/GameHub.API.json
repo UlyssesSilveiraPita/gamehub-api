@@ -10,6 +10,33 @@
         "tags": [
           "Achievements"
         ],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -216,17 +243,25 @@
         "additionalProperties": false
       },
       "CreateAchievementDto": {
+        "required": [
+          "description",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
           },
           "points": {
+            "maximum": 1000,
+            "minimum": 1,
             "type": "integer",
             "format": "int32"
           }
@@ -234,17 +269,25 @@
         "additionalProperties": false
       },
       "UpdateAchievementDto": {
+        "required": [
+          "description",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
           },
           "points": {
+            "maximum": 1000,
+            "minimum": 1,
             "type": "integer",
             "format": "int32"
           }
