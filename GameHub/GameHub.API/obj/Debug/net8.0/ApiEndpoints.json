@@ -125,6 +125,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "GameHub.API.Controllers.LeaderboardController",
+    "Method": "Create",
+    "RelativePath": "api/Leaderboard",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "GameHub.API.Dtos.Leaderboard.CreateLeaderboardEntryDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "GameHub.API.Dtos.Leaderboard.LeaderboardEntryResponseDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "GameHub.API.Controllers.PlayersController",
     "Method": "Getall",
     "RelativePath": "api/Players",
@@ -232,6 +258,89 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GameHub.API.Controllers.PlayersController",
+    "Method": "GetPlayerAchievements",
+    "RelativePath": "api/Players/{playerId}/Achievements",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "playerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[GameHub.API.Dtos.Achievements.AchievementResponseDto, GameHub.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "GameHub.API.Controllers.PlayersController",
+    "Method": "UnlockAchievement",
+    "RelativePath": "api/Players/{playerId}/Achievements/{achievementId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "playerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "achievementId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "GameHub.API.Dtos.PlayerAchievements.PlayerAchievementResponseDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "GameHub.API.Controllers.PlayersController",
+    "Method": "GetPlayerSaveGames",
+    "RelativePath": "api/Players/{playerId}/SaveGames",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "playerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[GameHub.API.Dtos.SaveGames.SaveGameResponseDto, GameHub.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "GameHub.API.Controllers.SaveGamesController",

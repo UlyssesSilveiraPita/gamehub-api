@@ -217,6 +217,54 @@
         }
       }
     },
+    "/api/Leaderboard": {
+      "post": {
+        "tags": [
+          "Leaderboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLeaderboardEntryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLeaderboardEntryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLeaderboardEntryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaderboardEntryResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaderboardEntryResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaderboardEntryResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Players": {
       "get": {
         "tags": [
@@ -398,6 +446,153 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Players/{playerId}/SaveGames": {
+      "get": {
+        "tags": [
+          "Players"
+        ],
+        "parameters": [
+          {
+            "name": "playerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SaveGameResponseDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SaveGameResponseDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SaveGameResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Players/{playerId}/Achievements/{achievementId}": {
+      "post": {
+        "tags": [
+          "Players"
+        ],
+        "parameters": [
+          {
+            "name": "playerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "achievementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerAchievementResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerAchievementResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerAchievementResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Players/{playerId}/Achievements": {
+      "get": {
+        "tags": [
+          "Players"
+        ],
+        "parameters": [
+          {
+            "name": "playerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AchievementResponseDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AchievementResponseDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AchievementResponseDto"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -617,6 +812,25 @@
         },
         "additionalProperties": false
       },
+      "CreateLeaderboardEntryDto": {
+        "required": [
+          "playerId"
+        ],
+        "type": "object",
+        "properties": {
+          "playerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "score": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreatePlayerDto": {
         "required": [
           "nickName"
@@ -657,6 +871,50 @@
           "saveDataJson": {
             "minLength": 1,
             "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LeaderboardEntryResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "playerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "playerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "score": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PlayerAchievementResponseDto": {
+        "type": "object",
+        "properties": {
+          "playerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "achievementId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "unlockedAt": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false

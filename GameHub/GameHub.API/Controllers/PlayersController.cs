@@ -1,9 +1,13 @@
 ﻿using GameHub.API.Data;
-using GameHub.API.Dtos.Players;
 using GameHub.API.Entities;
+using GameHub.API.Dtos.Players;
+using GameHub.API.Dtos.SaveGames;
+using GameHub.API.Dtos.PlayerAchievements;
+using GameHub.API.Dtos.Achievements;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace GameHub.API.Controllers;
 
@@ -124,4 +128,105 @@ public class PlayersController : ControllerBase
         return NoContent();
     }
 
+    [HttpGet("{playerId}/SaveGames")]
+    public async Task<ActionResult<IEnumerable<SaveGameResponseDto>>> GetPlayerSaveGames(Guid playerId)
+    {
+         var playerExists = await _context.Players
+            .AnyAsync(p => p.Id == playerId && !p.IsDeleted); // verificacao se a sabes no bando de dados
+
+        if( !playerExists )
+        {
+            return NotFound("Player não Encontrado");
+        }
+
+        var saveGames = await _context.SaveGames
+            .Where(s => s.PlayerId == playerId) // filto para saves especificos de cada jogador
+            .Select(s => new SaveGameResponseDto
+            {
+                Id = s.Id,
+                PlayerId = s.PlayerId,
+                Level = s.Level,
+                Gold = s.Gold,
+                SaveDataJson = s.SaveDataJson,
+                LastSavedAt = s.LastSavedAt
+            })
+            .ToListAsync();
+            
+        return Ok(saveGames);
+    }
+
+    [HttpPost("{playerId}/Achievements/{achievementId}")]
+    public async Task<ActionResult<PlayerAchievementResponseDto>> UnlockAchievement(
+        Guid playerId,
+        Guid achievementId)
+    {
+        var playerExists = await _context.Players // valida se o player existe
+            .AnyAsync(p => p.Id == playerId && !p.IsDeleted);
+
+        if ( !playerExists )
+        {
+            return NotFound("Player não encontrado");
+        }
+
+        var achievementExists = await _context.Achievements
+            .AnyAsync(a => a.Id == achievementId);
+
+        if(!achievementExists ) // valida se o achievement existe
+        {
+            return NotFound("Achievement não encontrado.");
+        }
+
+        var alreadyUnloacked = await _context.PlayerAchievements
+            .AnyAsync(pa => pa.PlayerId == playerId && pa.AchievementId == achievementId);
+
+        if(alreadyUnloacked) // valida se o player ja liberou o achievement
+        {
+            return Conflict("Esse player ja desbloqueou esse Achievement.");
+        }
+
+        var playerAchievement = new PlayerAchievement
+        {
+            PlayerId = playerId,
+            AchievementId = achievementId,
+            UnlockedAt = DateTime.UtcNow
+        };
+
+        _context.PlayerAchievements.Add(playerAchievement);
+        await _context.SaveChangesAsync();
+
+        var response = new PlayerAchievementResponseDto
+        {
+            PlayerId = playerId,
+            AchievementId = playerAchievement.AchievementId,
+            UnlockedAt = playerAchievement.UnlockedAt
+        };
+
+
+        return Ok(response);
+    }
+
+    [HttpGet("{playerId}/Achievements")]
+    public async Task<ActionResult<IEnumerable<AchievementResponseDto>>> GetPlayerAchievements(Guid playerId)
+    {
+        var playerExists = await _context.Players
+            .AnyAsync(p => p.Id == playerId && !p.IsDeleted);
+
+        if (!playerExists)
+        {
+            return NotFound("Player não encontrado");
+        }
+
+        var achievements = await _context.PlayerAchievements
+            .Where(pa => pa.PlayerId == playerId)
+            .Select(pa => new AchievementResponseDto
+            {
+                Id = pa.Achievement.Id,
+                Name = pa.Achievement.Name,
+                Description = pa.Achievement.Description,
+                Points = pa.Achievement.Points
+            })
+            .ToListAsync();
+
+        return Ok(achievements);
+    }
 }
