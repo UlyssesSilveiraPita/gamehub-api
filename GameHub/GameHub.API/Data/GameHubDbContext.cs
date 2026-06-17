@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using GameHub.API.Entities;
 
 namespace GameHub.API.Data;
 
-public class GameHubDbContext : DbContext
+public class GameHubDbContext : IdentityDbContext<ApplicationUser>
 {
     public GameHubDbContext(DbContextOptions<GameHubDbContext> options) : base(options)
     {
