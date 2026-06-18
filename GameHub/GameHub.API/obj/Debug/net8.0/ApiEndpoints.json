@@ -142,6 +142,16 @@
   },
   {
     "ContainingType": "GameHub.API.Controllers.AuthController",
+    "Method": "Me",
+    "RelativePath": "api/Auth/Me",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GameHub.API.Controllers.AuthController",
     "Method": "Register",
     "RelativePath": "api/Auth/Register",
     "HttpMethod": "POST",
@@ -416,6 +426,22 @@
   },
   {
     "ContainingType": "GameHub.API.Controllers.PlayersController",
+    "Method": "LinkMe",
+    "RelativePath": "api/Players/{playerId}/LinkMe",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "playerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GameHub.API.Controllers.PlayersController",
     "Method": "GetPlayerSaveGames",
     "RelativePath": "api/Players/{playerId}/SaveGames",
     "HttpMethod": "GET",
@@ -431,6 +457,26 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[GameHub.API.Dtos.SaveGames.SaveGameResponseDto, GameHub.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "GameHub.API.Controllers.PlayersController",
+    "Method": "GetMyPlayers",
+    "RelativePath": "api/Players/MyPlayers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[GameHub.API.Dtos.Players.PlayerResponseDto, GameHub.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -532,5 +578,25 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GameHub.API.Controllers.SaveGamesController",
+    "Method": "GetMySaves",
+    "RelativePath": "api/SaveGames/MySaves",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[GameHub.API.Dtos.SaveGames.SaveGameResponseDto, GameHub.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   }
 ]

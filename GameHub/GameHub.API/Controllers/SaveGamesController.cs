@@ -1,8 +1,11 @@
-﻿using GameHub.API.Data;
+﻿using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using GameHub.API.Data;
 using GameHub.API.Dtos.SaveGames;
 using GameHub.API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace GameHub.API.Controllers;
@@ -124,4 +127,35 @@ public class SaveGamesController : Controller
 
         return NoContent();
     }
+
+    [Authorize] // Retorna os saves do usuario
+    [HttpGet("MySaves")]
+    public async Task<ActionResult<IEnumerable<SaveGameResponseDto>>> GetMySaves()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier) ?.Value;
+
+        if(string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized("Usuario nao Autenticado");
+        }
+
+        var saves = await _context.SaveGames
+            .Where(s => s.Player.UserId == userId)
+            .Select(s => new SaveGameResponseDto
+            {
+                Id = s.Id,
+                PlayerId = s.PlayerId,  
+                Level = s.Level,
+                Gold = s.Gold,
+                SaveDataJson = s.SaveDataJson,
+                LastSavedAt = s.LastSavedAt
+            })
+            .ToListAsync();
+
+        return Ok(saves);
+
+
+
+    }
+
 }

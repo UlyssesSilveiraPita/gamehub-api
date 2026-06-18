@@ -37,6 +37,12 @@ public class GameHubDbContext : IdentityDbContext<ApplicationUser>
             .HasOne(pa => pa.Achievement)
             .WithMany(a => a.PlayerAchievements)
             .HasForeignKey(pa => pa.AchievementId);
+
+        modelBuilder.Entity<Player>()
+            .HasOne(p => p.User) // player tem um usuario
+            .WithMany() // um usuario tem um player
+            .HasForeignKey("UserId") //FK fica a tabela players
+            .OnDelete(DeleteBehavior.SetNull); // se usuario for apagado, o player nao e apagado so fica sem usuario
     }
 
 

@@ -1,11 +1,10 @@
-﻿using GameHub.API.Dtos.Auth;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using GameHub.API.Dtos.Auth;
 using GameHub.API.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.JSInterop.Infrastructure;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
@@ -114,4 +113,16 @@ public class AuthController : ControllerBase
         });
 
     }
+    
+    [Authorize]
+    [HttpGet("Me")]
+    public ActionResult Me()
+    {
+        return Ok(new
+        {
+            UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+            UserName = User.Identity?.Name
+        });
+    }
+
 }

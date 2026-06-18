@@ -4,7 +4,8 @@ public class Player
 {
     public Guid Id { get; set; }
     public string NickName { get; set; } = string.Empty;
-    public string UserId { get; set; } = string.Empty;
+    public string? UserId { get; set; }
+    public ApplicationUser? User { get; set; }
     public int Level { get; set; } = 1;
     public int Experience { get; set; } = 0;
     public bool IsDeleted { get; set; } = false;
