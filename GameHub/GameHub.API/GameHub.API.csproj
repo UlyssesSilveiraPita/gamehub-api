@@ -21,6 +21,7 @@
 
 	<ItemGroup>
 		<Folder Include="Configurations\" />
+		<Folder Include="docs\images\" />
 		<Folder Include="Mappings\" />
 		<Folder Include="Services\" />
 	</ItemGroup>
