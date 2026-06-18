@@ -1,9 +1,11 @@
-﻿using GameHub.API.Data;
+﻿using Microsoft.AspNetCore.Authentication;
+using GameHub.API.Data;
 using GameHub.API.Dtos.Leaderboard;
 using GameHub.API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameHub.API.Controllers;
 
@@ -18,6 +20,7 @@ public class LeaderboardController : ControllerBase
         _context = context;
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<LeaderboardEntryResponseDto>> Create(CreateLeaderboardEntryDto dto)
     {
