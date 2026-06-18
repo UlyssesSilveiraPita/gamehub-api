@@ -130,7 +130,7 @@ ApplicationUser
 ### Clonar repositório
 
 ```bash
-git clone https://github.com/SEU-USUARIO/GameHub.API.git
+git clone https://github.com/UlyssesSilveiraPita/GameHub.API.git
 ```
 
 ### Restaurar dependências
